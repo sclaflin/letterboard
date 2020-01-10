@@ -31,7 +31,7 @@ export class Database extends EventEmitter {
 		super();
 		this._client = client;
 	}
-	async generateData(): Promise<void> {
+	static generateData() {
 		const BOARD_STYLE: Style = {
 			backgroundColor: '#ccc',
 			border: '1px solid #000',
@@ -85,7 +85,7 @@ export class Database extends EventEmitter {
 			Y:	2,
 			Z:	1
 		};
-		const data = {
+		return {
 			board: BOARD_STYLE,
 			letters: Object.keys(letters).map((value: string) => value.repeat(letters[value])).join('').split('').map((v, index) => {
 				const letterProps = {
@@ -102,9 +102,6 @@ export class Database extends EventEmitter {
 				return letterProps;
 			})
 		};
-
-		await this.setBoard(data.board);
-		await this.setLetters(data.letters);
 	}
 	async getLetters(): Promise<Letter[]> {
 		return JSON.parse(await this.sendCommand('JSON.GET', ['letters', '.']));

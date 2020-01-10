@@ -23,7 +23,9 @@ export class LetterService {
 	}
 	private async initDatabase(): Promise<void> {
 		if(!await this._database.getBoard()) {
-			await this._database.generateData();
+			const data = Database.generateData();
+			await this._database.setBoard(data.board);
+			await this._database.setLetters(data.letters);
 		}
 	}
 	private initServer(): void {
