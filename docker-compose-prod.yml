@@ -1,0 +1,31 @@
+version: '3.3'
+services:
+    client:
+        container_name: letterboard-client
+        build:
+            context: ./client
+            dockerfile: Dockerfile-prod
+        image: letterboard-client:prod
+        ports:
+            - '80:80'
+        environment:
+            - NODE_ENV=production
+    server:
+        container_name: letterboard-server
+        build:
+            context: ./server
+            dockerfile: Dockerfile-prod
+        image: letterboard-server:prod
+        volumes:
+            - './server:/app'
+            - '/app/node_modules'
+        ports:
+            - '3001:3000'
+        environment: 
+            - NODE_ENV=production
+            - HOST=0.0.0.0
+        depends_on: 
+            - redis
+    redis:
+        container_name: redis-json
+        image: redislabs/rejson:latest

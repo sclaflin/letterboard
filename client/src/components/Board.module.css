@@ -1,0 +1,27 @@
+.board {
+	width: 20em;
+	height: 20em;
+	position: relative;
+	overflow: hidden;
+	margin: 0 auto;
+	/* only allow pinch zooming as panning interferes with touch events here */
+	touch-action: pinch-zoom;
+	/* disable text selection */
+	user-select: none;
+}
+
+@keyframes swinging {
+	0%{transform: rotate(10deg);}
+	50%{transform: rotate(-10deg)}
+	100%{transform: rotate(10deg);}
+}
+ 
+.swinging {
+	transform-origin: 50% 0.25em;
+	animation: swinging 1s ease-in-out forwards infinite;
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
+.highlight {
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
