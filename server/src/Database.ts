@@ -26,20 +26,10 @@ export interface Style {
 }
 
 export class Database extends EventEmitter {
-	private _hostname: string;
-	private _port: number;
 	private _client: redis.RedisClient;
-	constructor(hostname: string, port: number = REDIS_DEFAULT_PORT) {
+	constructor(client: redis.RedisClient) {
 		super();
-		this._hostname = hostname;
-		this._port = port;
-		this._client = redis.createClient(this.port, this.hostname);
-	}
-	get hostname(): string {
-		return this._hostname;
-	}
-	get port(): number {
-		return this._port;
+		this._client = client;
 	}
 	async generateData(): Promise<void> {
 		const BOARD_STYLE: Style = {

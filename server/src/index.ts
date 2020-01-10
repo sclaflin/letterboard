@@ -1,16 +1,17 @@
+import * as redis from 'redis';
 import { Database } from './Database';
 import { createServer } from 'restify';
 import { LetterService } from './LetterService';
 import { errConcat } from './Utils';
 
-const DATABASE_HOST = 'redis';
-const DATABASE_PORT = 6379;
+const REDIS_HOST = 'redis';
+const REDIS_PORT = 6379;
 const SERVICE_PORT = 3001;
 
 (async() => {
 	try {
 		const letterService = new LetterService(
-			new Database(DATABASE_HOST, DATABASE_PORT),
+			new Database(redis.createClient(REDIS_PORT, REDIS_HOST)),
 			createServer()
 		);
 		await letterService.init();
