@@ -1,8 +1,6 @@
 import * as redis from 'redis';
 import { EventEmitter } from 'events';
 
-const REDIS_DEFAULT_PORT = 6379;
-
 export interface Letter {
 	id: number,
 	value: string,
