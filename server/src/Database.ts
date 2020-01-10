@@ -120,9 +120,10 @@ export class Database extends EventEmitter {
 		await this.sendCommand('JSON.SET', ['letters', '['+ index +']', JSON.stringify(letter)]);
 	}
 	async updateLetterPosition(index: number, letter: Letter): Promise<void> {
-		//only update specific properties of the letter
 		await this.sendCommand('JSON.SET', ['letters', '['+ index +'].style.left', JSON.stringify(letter.style.left)]);
 		await this.sendCommand('JSON.SET', ['letters', '['+ index +'].style.top', JSON.stringify(letter.style.top)]);
+	}
+	async updateLetterTransform(index: number, letter: Letter): Promise<void> {
 		await this.sendCommand('JSON.SET', ['letters', '['+ index +'].style.transform', JSON.stringify(letter.style.transform)]);
 		await this.sendCommand('JSON.SET', ['letters', '['+ index +'].style.transformOrigin', JSON.stringify(letter.style.transformOrigin)]);
 	}

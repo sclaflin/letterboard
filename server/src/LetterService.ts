@@ -57,7 +57,8 @@ export class LetterService {
 		});
 		this._server.put('/letters/:index', async (req, res, next) => {
 			await this._database.updateLetterPosition(req.params.index, req.body);
-			res.send('kthx');
+			await this._database.updateLetterTransform(req.params.index, req.body);
+			res.send('kthx!');
 			return next();
 		});
 	}
