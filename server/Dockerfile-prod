@@ -12,5 +12,7 @@ COPY package*.json /app/
 
 RUN npm ci
 
+ADD src /app/src
+
 # start app
 CMD ["npm", "start"]
