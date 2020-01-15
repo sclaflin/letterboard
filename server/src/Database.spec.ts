@@ -76,55 +76,63 @@ describe('Database', () => {
 
 		const board = await db.getBoard();
 
-		expect(board).deep.eq(data.board);
+		expect(board).deep.eq(new Style(data.board));
 	});
 
 	it('should store letters', async () => {
 		const data = Database.generateData();
-		await db.setLetters(data.letters.map(v => new Letter(v)));
+		const inLetters = data.letters.map(v => new Letter(v));
+		await db.setLetters(inLetters);
 
-		const letters = await db.getLetters();
+		const outLetters = await db.getLetters();
 
-		expect(letters).deep.eq(data.letters);
+		expect(outLetters).deep.eq(inLetters);
 	});
 
 	it('should retrieve a single letter', async () => {
-		await db.setLetters(letters.map(v => new Letter(v)));
-		const id = 0;
-		const letter = await db.getLetter(id);
+		const data = Database.generateData();
+		const inLetters = data.letters.map(v => new Letter(v));
+		await db.setLetters(inLetters);
+		
+		const index = 0;
+		const outLetter = await db.getLetter(index);
 
-		expect(letter.id).equals(id);
+		expect(outLetter).deep.eq(inLetters[index]);
 	});
 
 	it('should update a letter position', async () => {
-		await db.setLetters(letters.map(v => new Letter(v)));
-		const id = 0;
-		const letter = await db.getLetter(id);
+		const data = Database.generateData();
+		const inLetters = data.letters.map(v => new Letter(v));
+		await db.setLetters(inLetters);
 
-		letter.style.top = '10em';
-		letter.style.left = '10em';
+		const index = 0;
+		const inLetter = inLetters[index];
 
-		await db.updateLetterPosition(id, letter);
+		inLetter.style.top = '10em';
+		inLetter.style.left = '10em';
 
-		const letter2 = await db.getLetter(id);
+		await db.updateLetterPosition(index, inLetter);
 
-		expect(letter.style.top).equals(letter2.style.top);
-		expect(letter.style.left).equals(letter2.style.left);
+		const outLetter = await db.getLetter(index);
+		
+		expect(inLetter).deep.eq(outLetter);
 	});
 
 	it('should update a letter transform', async () => {
-		await db.setLetters(letters.map(v => new Letter(v)));
-		const id = 0;
-		const letter = await db.getLetter(0);
+		const data = Database.generateData();
+		const inLetters = data.letters.map(v => new Letter(v));
+		await db.setLetters(inLetters);
 
-		letter.style.transform = 'matrix(0.99942, 0.0340418, -0.0340418, 0.99942, 0, 0)';
-		letter.style.transformOrigin = '19.5469px 16px';
+		const index = 0;
+		const inLetter = inLetters[index];
 
-		await db.updateLetterTransform(id, letter);
+		inLetter.style.transform = 'matrix(0.99942, 0.0340418, -0.0340418, 0.99942, 0, 0)';
+		inLetter.style.transformOrigin = '19.5469px 16px';
 
-		const letter2 = await db.getLetter(id);
+		await db.updateLetterTransform(index, inLetter);
 
-		expect(letter.style.transform).equals(letter2.style.transform);
-		expect(letter.style.transformOrigin).equals(letter2.style.transformOrigin);
+		const outLetter = await db.getLetter(index);
+
+		expect(inLetter).deep.eq(outLetter);
 	});
 });
