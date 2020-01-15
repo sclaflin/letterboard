@@ -1,5 +1,7 @@
 import * as restify from 'restify';
 import * as corsMiddleware from 'restify-cors-middleware';
+import { Style } from './Style';
+import { Letter } from './Letter';
 import { Database } from './Database';
 
 export class LetterService {
@@ -24,8 +26,8 @@ export class LetterService {
 	private async initDatabase(): Promise<void> {
 		if(!await this._database.getBoard()) {
 			const data = Database.generateData();
-			await this._database.setBoard(data.board);
-			await this._database.setLetters(data.letters);
+			await this._database.setBoard(new Style(data.board));
+			await this._database.setLetters(data.letters.map(v => new Letter(v)));
 		}
 	}
 	private initServer(): void {

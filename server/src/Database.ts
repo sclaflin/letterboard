@@ -1,26 +1,7 @@
 import * as redis from 'redis';
+import { Style, StyleProps } from './Style';
+import { Letter, LetterProps } from './Letter';
 
-export interface Letter {
-	id: number,
-	value: string,
-	style: Style
-}
-
-export interface Style {
-	backgroundColor?: string,
-	border?: string,
-	color?: string,
-	fontSize?: string,
-	width?: string,
-	height?: string,
-	position?: string,
-	left?: string,
-	top?: string,
-	transform?: string,
-	transformOrigin?: string,
-	margin?: string,
-	boxShadow?: string
-}
 
 export class Database {
 	private _client: redis.RedisClient;
@@ -28,7 +9,7 @@ export class Database {
 		this._client = client;
 	}
 	static generateData() {
-		const BOARD_STYLE: Style = {
+		const BOARD_STYLE: StyleProps = {
 			backgroundColor: '#ccc',
 			border: '1px solid #000',
 			fontSize: '2em',
@@ -93,7 +74,7 @@ export class Database {
 						color: getRandomColor(),
 						fontSize: '2em'
 					}
-				};
+				} as LetterProps;
 		
 				return letterProps;
 			})
