@@ -21,6 +21,11 @@ export class LetterService {
 			this._server.listen(port, () => resolve())
 		);
 	}
+	async close(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this._server.close(() => resolve());
+		});
+	}
 	get url(): string {
 		return this._server.url;
 	}
