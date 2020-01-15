@@ -4,9 +4,9 @@ import { createServer } from 'restify';
 import { LetterService } from './LetterService';
 import { errConcat } from './Utils';
 
-const REDIS_HOST = 'redis';
-const REDIS_PORT = 6379;
-const SERVICE_PORT = 3001;
+const REDIS_HOST = process.env.REDIS_HOST || 'redis';
+const REDIS_PORT = Number(process.env.REDIS_PORT || 6379);
+const SERVICE_PORT = Number(process.env.SERVICE_PORT || 3001);
 
 (async() => {
 	try {
