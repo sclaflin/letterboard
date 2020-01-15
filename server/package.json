@@ -39,6 +39,7 @@
     "gts": "^1.1.2",
     "mocha": "^7.0.0",
     "nodemon": "^2.0.2",
+    "restify-swagger-jsdoc": "^3.2.3",
     "supertest": "^4.0.2",
     "ts-node": "^8.5.4",
     "tslint": "^5.20.1",
