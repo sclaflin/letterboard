@@ -46,22 +46,38 @@ export class LetterService {
 			return next();
 		});
 		this._server.get('/board', async (req, res, next) => {
-			res.send(await this._database.getBoard());
-			return next();
+			try {
+				res.send(await this._database.getBoard());
+				return next();
+			}
+			catch(e) { return next(e); }
 		});
 		this._server.get('/letters', async (req, res, next) => {
-			res.send(await this._database.getLetters());
-			return next();
+			try {
+				res.send(await this._database.getLetters());
+				return next();
+			}
+			catch(e) { return next(e); }
 		});
 		this._server.get('/letters/:index', async (req, res, next) => {
-			res.send(await this._database.getLetter(req.params.index));
-			return next();
+			try {
+				const index: number = Number(req.params.index);
+				res.send(await this._database.getLetter(index));
+				return next();
+			}
+			catch(e) { return next(e); }
 		});
 		this._server.put('/letters/:index', async (req, res, next) => {
-			await this._database.updateLetterPosition(req.params.index, req.body);
-			await this._database.updateLetterTransform(req.params.index, req.body);
-			res.send('kthx!');
-			return next();
+			try {
+				const index: number = Number(req.params.index);
+				const letter = new Letter(req.body);
+
+				await this._database.updateLetterPosition(index, letter);
+				await this._database.updateLetterTransform(index, letter);
+				res.send(await this._database.getLetter(index));
+				return next();
+			}
+			catch(e) { return next(e); }
 		});
 	}
 }
