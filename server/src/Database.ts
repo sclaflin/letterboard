@@ -1,5 +1,4 @@
 import * as redis from 'redis';
-import { EventEmitter } from 'events';
 
 export interface Letter {
 	id: number,
@@ -23,10 +22,9 @@ export interface Style {
 	boxShadow?: string
 }
 
-export class Database extends EventEmitter {
+export class Database {
 	private _client: redis.RedisClient;
 	constructor(client: redis.RedisClient) {
-		super();
 		this._client = client;
 	}
 	static generateData() {
