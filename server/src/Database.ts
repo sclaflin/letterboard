@@ -107,7 +107,7 @@ export class Database {
 
 		if(!Number.isInteger(index)) throw new TypeError('index must be an integer.');
 
-		return JSON.parse(await this.sendCommand('JSON.GET', ['letters', '['+ index +']']));
+		return new Letter(JSON.parse(await this.sendCommand('JSON.GET', ['letters', '['+ index +']'])));
 	}
 	async setLetter(index: number, letter: Letter): Promise<void> {
 		Utils.validateParam(index, 'index', ['number']);
