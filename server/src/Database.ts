@@ -1,4 +1,5 @@
 import * as redis from 'redis';
+import * as Utils from './Utils';
 import { Style, StyleProps } from './Style';
 import { Letter, LetterProps } from './Letter';
 
@@ -86,6 +87,9 @@ export class Database {
 		return obj ? obj.map(v => new Letter(v)) : null;
 	}
 	async setLetters(letters: Letter[]): Promise<void> {
+		Utils.validateParam(letters, 'letters', null, [Array]);
+		letters.forEach(v => Utils.validateParam(v, 'letter', null, [Letter]));
+
 		await this.sendCommand('JSON.SET', ['letters', '.', JSON.stringify(letters)]);
 	}
 	async getBoard(): Promise<Style | null> {
@@ -94,19 +98,40 @@ export class Database {
 		return obj ? new Style(obj) : null;
 	}
 	async setBoard(style: Style): Promise<void> {
+		Utils.validateParam(style, 'style', null, [Style]);
+
 		await this.sendCommand('JSON.SET', ['board', '.', JSON.stringify(style)]);
 	}
 	async getLetter(index: number): Promise<Letter> {
+		Utils.validateParam(index, 'index', ['number']);
+
+		if(!Number.isInteger(index)) throw new TypeError('index must be an integer.');
+
 		return JSON.parse(await this.sendCommand('JSON.GET', ['letters', '['+ index +']']));
 	}
 	async setLetter(index: number, letter: Letter): Promise<void> {
+		Utils.validateParam(index, 'index', ['number']);
+		Utils.validateParam(letter, 'letter', null, [Letter]);
+
+		if(!Number.isInteger(index)) throw new TypeError('index must be an integer.');
+
 		await this.sendCommand('JSON.SET', ['letters', '['+ index +']', JSON.stringify(letter)]);
 	}
 	async updateLetterPosition(index: number, letter: Letter): Promise<void> {
+		Utils.validateParam(index, 'index', ['number']);
+		Utils.validateParam(letter, 'letter', null, [Letter]);
+
+		if(!Number.isInteger(index)) throw new TypeError('index must be an integer.');
+
 		await this.sendCommand('JSON.SET', ['letters', '['+ index +'].style.left', JSON.stringify(letter.style.left)]);
 		await this.sendCommand('JSON.SET', ['letters', '['+ index +'].style.top', JSON.stringify(letter.style.top)]);
 	}
 	async updateLetterTransform(index: number, letter: Letter): Promise<void> {
+		Utils.validateParam(index, 'index', ['number']);
+		Utils.validateParam(letter, 'letter', null, [Letter]);
+
+		if(!Number.isInteger(index)) throw new TypeError('index must be an integer.');
+
 		await this.sendCommand('JSON.SET', ['letters', '['+ index +'].style.transform', JSON.stringify(letter.style.transform)]);
 		await this.sendCommand('JSON.SET', ['letters', '['+ index +'].style.transformOrigin', JSON.stringify(letter.style.transformOrigin)]);
 	}
