@@ -80,14 +80,18 @@ export class Database {
 			})
 		};
 	}
-	async getLetters(): Promise<Letter[]> {
-		return JSON.parse(await this.sendCommand('JSON.GET', ['letters', '.']));
+	async getLetters(): Promise<Letter[] | null> {
+		const obj: LetterProps[] = JSON.parse(await this.sendCommand('JSON.GET', ['letters', '.']));
+
+		return obj ? obj.map(v => new Letter(v)) : null;
 	}
 	async setLetters(letters: Letter[]): Promise<void> {
 		await this.sendCommand('JSON.SET', ['letters', '.', JSON.stringify(letters)]);
 	}
-	async getBoard(): Promise<Style> {
-		return JSON.parse(await this.sendCommand('JSON.GET', ['board', '.']));
+	async getBoard(): Promise<Style | null> {
+		const obj = JSON.parse(await this.sendCommand('JSON.GET', ['board', '.']));
+		
+		return obj ? new Style(obj) : null;
 	}
 	async setBoard(style: Style): Promise<void> {
 		await this.sendCommand('JSON.SET', ['board', '.', JSON.stringify(style)]);
